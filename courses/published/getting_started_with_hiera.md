@@ -208,7 +208,7 @@ can leave out the Hiera call from the class definition. When the Puppet master
 compiles a catalog for your node it will check in Hiera before falling back to
 the defaults.
 
-In our example, let's assume there's a default value in profile::params:
+In our example, let's assume there's a default value in `profile::params`:
 
 <pre>
 class profile::dns (
@@ -219,9 +219,9 @@ class profile::dns (
 </pre>
 
 Now if there is a value in Hiera for `profile::dns::dns_server` the master will
-use that, otherwise it will fall back to what's in `params.pp` of the "profile"
+use that, otherwise it will fall back to what's in `params.pp` of the `profile`
 module. You may be thinking that Hiera understands namespaces, so it's somehow
-filing the `dns_server` key under `profile::dns`, but that isn't right. Hiera
+filing the `dns_server` key under `profile::dns`, but that isn't correct. Hiera
 just uses the entire string `profile::dns::dns_server` as a single key.
 
 As always, you can still override both defaults by specifying the
@@ -266,12 +266,12 @@ couple of unique snowflakes in your infrastructure.
 To support per-node configuration in Hiera, it's best to use the `clientcert`
 fact.  By default this is the hostname of the node when the certificate was
 generated and it's the unique name that the master knows the node by.  It's
-more secure than using the hostname since a compromised node could report a
-false hostname but can't fake another node's certificate.
+more secure than using the hostname fact since a compromised node could report
+a false hostname, but it can't fake another node's certificate.
 
-In order to keep all those YAML files from cluttering up our hieradata folder,
-we'll put them in a subfolder called "nodes" and add that level to the top of
-our hierarchy in hiera.yaml:
+In order to keep all those YAML files from cluttering up our `hieradata` folder,
+we'll put them in a subfolder called `nodes` and add that level to the top of
+our hierarchy in `hiera.yaml`:
 
 <pre>
 ---
@@ -310,8 +310,8 @@ hiera message clientcert=jane.puppet.vm
 
 This isn't limited to a single directory, you can have multiple subdirectories.
 You can even use have more complex levels of the hierarchy. For example, if you
-have multiple datacenters each with a development and production environment,
-you could use a custom fact of "datacenter" to have something like this:
+have multiple datacenters each with a `development` and `production` environment,
+you could use a custom fact of `datacenter` to have something like this:
 <pre>
 ---
 :backends: "yaml"
@@ -323,21 +323,22 @@ you could use a custom fact of "datacenter" to have something like this:
     - "common"
 </pre>
 
-To give a more complex configuration a try you can pass multiple parameters to
-the `hiera` command line tool.  For example, to find out the MOTD on the
-development servers in the Portland datacenter, you would use this command:
+To give a more complex configuration a try, you can pass multiple parameters to
+the `hiera` command line tool.  For example, to find out the message of the day
+on the development servers in the Portland datacenter, you would use this
+command:
 <pre>
 hiera message environment=development datacenter=portland
 </pre>
 
-We've set up a complex hierarchy, explore a bit, add some keys/value pairs, and
+We've set up a complex hierarchy, explore a bit, add some key/value pairs, and
 see if you can get a sense of how Hiera behaves. What happens if you use a
 hostname that doesn't have a corresponding YAML file? How about an environment
 that doesn't exist? What if you set up conflicting values? 
 
 If this is starting to seem overwhelming, don't worry. Hierachies of more than
 a few levels are unusual in practice, so don't add complexity if you don't need
-it. Even this example is probably more complexity than most users will ever
+it. Even this example is probably more complex than most users will ever
 need.
 
 ## Exercise 4
@@ -358,14 +359,14 @@ that at every level of the hierarchy it would lead to a lot of duplicate data.
 Thankfully, Hiera is more intelligent than that. Let's look at how this could
 play out in a hierarchy with three levels. At the top, we have the per-node
 configuration. Let's just set one up for Bob's dev server in
-'nodes/bob.puppet.vm.yaml':
+`nodes/bob.puppet.vm.yaml`:
 <pre>
 ---
 package_list:
   - emacs
 </pre>
 
-All of the other developers use vim, so let's make sure the development.yaml
+All of the other developers use vim, so let's make sure the `development.yaml`
 has that package along with some other useful things:
 <pre>
 ---
@@ -375,16 +376,16 @@ package_list:
   - cowsay
 </pre>
 
-But in production, we don't want anything extra, so instead of vim we'll just
-have vi and leave out the other packages:
+But in production, we don't want anything extra, so instead of `vim` we'll just
+have `vi` and leave out the other packages:
 <pre>
 ---
 package_list:
   - vi
 </pre>
 
-Finally, at the bottom of the hierarchy we have a few packages that should be
-installed on every machine in common.yaml:
+Finally, at the bottom of the hierarchy in `common.yaml`, we have a few packages
+that should be installed on every machine:
 <pre>
 ---
 package_list:
@@ -395,7 +396,7 @@ package_list:
 
 Unfortunately, using the `hiera()` function will only return the result from a
 single level in the hierarchy. To correctly merge across multiple levels of the
-hierarchy, we'll need to use `hiera_array()`:
+hierarchy, we'll use the `hiera_array()` function:
 
 <pre>
 $packages = hiera_array('package_list')
@@ -405,9 +406,9 @@ package { $packages:
 </pre>
 
 The best way to understand `hiera_array()` is to just dig in and try it out.
-It's pretty easy to test by using the command line `hiera` tool, just use the
-`-a` argument. For example to see what packages are installed on Bob's dev
-machine you would use this command:
+It's easy to test by using the command line `hiera` tool with the `-a`
+argument. For example, to see what packages are installed on Bob's dev
+machine, you would use this command:
 <pre>
 hiera -a package_list environment=development clientcert=bob.puppet.vm.yaml
 </pre>
@@ -418,9 +419,9 @@ and the result would be:
 </pre> 
 
 
-We've set up these example files and a few more on the practice machine, try a
+We've set up these example files and a few more on the practice machine. Try a
 few permutations until you have a feel for how `hiera_array()` works.
 
 ## Exercise 5
 
-hiera_array() examples.
+hiera_array() examples
