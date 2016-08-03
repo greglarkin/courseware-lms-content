@@ -35,7 +35,7 @@ data from your code.
 
 Using Hiera, the code would look this this:
 <pre>
-$message = hiera("message")
+$message = hiera('message')
 file { '/etc/motd':
   ensure  => file,
   owner   => 'root',
@@ -269,7 +269,7 @@ generated and it's the unique name that the master knows the node by.  It's
 more secure than using the hostname since a compromised node could report a
 false hostname but can't fake another node's certificate.
 
-In order to keep all those yaml files from cluttering up our hieradata folder,
+In order to keep all those YAML files from cluttering up our hieradata folder,
 we'll put them in a subfolder called "nodes" and add that level to the top of
 our hierarchy in hiera.yaml:
 
@@ -302,10 +302,10 @@ message: "This is Bob's development server. Don't touch anything, or else!"
 </pre>
 
 Since you can't log in to the actual machines, you can test out Hiera's
-response to different certnames by passing in "certname" as a variable to the
+response to different hostnames by passing in `clientcert` as a variable to the
 `hiera` command line tool:
 <pre>
-hiera message certname=jane.puppet.vm
+hiera message clientcert=jane.puppet.vm
 </pre>
 
 This isn't limited to a single directory, you can have multiple subdirectories.
@@ -332,12 +332,12 @@ hiera message environment=development datacenter=portland
 
 We've set up a complex hierarchy, explore a bit, add some keys/value pairs, and
 see if you can get a sense of how Hiera behaves. What happens if you use a
-certname that doesn't have a corresponding yaml file? How about an environment
+hostname that doesn't have a corresponding YAML file? How about an environment
 that doesn't exist? What if you set up conflicting values? 
 
 If this is starting to seem overwhelming, don't worry. Hierachies of more than
 a few levels are unusual in practice, so don't add complexity if you don't need
-it. Even this example is probably more complexity then most users will ever
+it. Even this example is probably more complexity than most users will ever
 need.
 
 ## Exercise 4
@@ -409,7 +409,7 @@ It's pretty easy to test by using the command line `hiera` tool, just use the
 `-a` argument. For example to see what packages are installed on Bob's dev
 machine you would use this command:
 <pre>
-hiera -a package_list environment=development certname=bob.puppet.vm.yaml
+hiera -a package_list environment=development clientcert=bob.puppet.vm.yaml
 </pre>
 
 and the result would be:
@@ -419,7 +419,7 @@ and the result would be:
 
 
 We've set up these example files and a few more on the practice machine, try a
-few permutations until you have a feel for how hiera_array() works.
+few permutations until you have a feel for how `hiera_array()` works.
 
 ## Exercise 5
 
