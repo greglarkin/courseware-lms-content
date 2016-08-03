@@ -204,7 +204,7 @@ convention is to use the name of class as part of the Hiera key like this:
 
 This convention isn't just to make things easy to remember. Since Puppet 3,
 there has been a feature called "Automatic Parameter Lookup" which means you
-can leave out the Hiera call from the class definition. When the Puppet Master
+can leave out the Hiera call from the class definition. When the Puppet master
 compiles a catalog for your node it will check in Hiera before falling back to
 the defaults.
 
@@ -237,7 +237,7 @@ Automatic Parameter Lookup is one of the ways in which Hiera can seem "magical"
 to new users.  To help you get the hang of how it works, we've created a few
 example classes that take parameters. Play around with it until it makes sense.
 
-For this exercise, you'll be running `puppet agent -t` against a Puppet Master.
+For this exercise, you'll be running `puppet agent -t` against a Puppet master.
 For convenience, we've made a link to your agent's environment on the master to
 the `/root/puppetcode` directory on the agent node.  You can just declare the
 example classes in the `default` node definition in
