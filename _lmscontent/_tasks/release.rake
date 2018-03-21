@@ -118,7 +118,7 @@ namespace :release do
     parent = tags[1].nil? ? repo.last_commit : tags[1].target 
 
     # Compare that tag to the tag that historically preceded it
-    parent.diff(tags[0].target.target).each_delta do |delta| 
+    parent.diff(tags[0].target).each_delta do |delta|
       # Join the path with path repo and read the file into Kramdown
       # TODO: break this out to avoid duplication above
       next unless delta.new_file[:path] =~ %r{.*\.md$}
